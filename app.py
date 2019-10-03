@@ -51,6 +51,7 @@ if not os.path.exists(DATABASE):
         INSERT INTO User (Username, Password) 
             VALUES ("admin", "admin");    
     """)
+    conn.commit()
     conn.close()
 
 
