@@ -1,0 +1,11 @@
+
+@import "bootswatch-darkly/variables";
+@import "bootstrap-4.3.1/scss/bootstrap";
+@import "bootswatch-darkly/bootswatch";
+
+#in_autoScroll:hover {
+  background-color: $dark;
+  &.active {
+    background-color: darken($primary, 5%);
+  }
+}

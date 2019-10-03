@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- styling -->
+    {% assets "scss_all" %}
+      <link rel=stylesheet type=text/css href="{{ ASSET_URL }}">
+    {% endassets %}
+
+  <!-- page title -->
+  <title>{% block title %}{% endblock %}</title>
+
+</head>
+<body>
+
+<!-- navigation bar -->
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+  <div class="container">
+
+    <!-- nav title -->
+    <a class="navbar-brand" href="#">
+      Console
+    </a>
+
+    <!-- mobile nav hamburger -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- collapsible nav menu -->
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="#">
+          Home <span class="sr-only">(current)</span>
+        </a>
+        <a class="nav-item nav-link" href="#">
+          About
+        </a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+{% block content_before %}
+{% endblock %}
+
+<div class="container mt-4">
+    {% block content %}
+    {% endblock %}
+</div>
+
+{% block content_after %}
+{% endblock %}
+
+<!-- javascript -->
+<script src="{{ url_for('static', filename='bootstrap-4.3.1/js/jquery-3.4.1.slim.min.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap-4.3.1/js/bootstrap.bundle.js') }}"></script>
+{% block extra_js %}
+{% endblock %}
+
+</body>
+</html>
