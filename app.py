@@ -42,14 +42,14 @@ if not os.path.exists(DATABASE):
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE User (
-            Username VARCHAR(255),
-            Password VARCHAR(255)
+            Username TEXT,
+            Password TEXT
         );
     """)
     conn.commit()
     cur.execute("""
         INSERT INTO User (Username, Password) 
-            VALUES ("admin", "admin");    
+            VALUES ('admin', 'admin');    
     """)
     conn.commit()
     conn.close()
