@@ -6,7 +6,7 @@
 # * sets up database connection (w/ teardown)
 # * launches development server
 #
-
+import os
 import sqlite3
 
 from flask import Flask, g
@@ -34,6 +34,24 @@ assets.register('scss_all', scss)
 # Set up database connection and teardown
 # (SOURCE: https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/)
 # ===============================================
+DATABASE = "./data.db"
+
+# if database does not exist, create tables
+if not os.path.exists(DATABASE):
+    conn = sqlite3.connect("./data.db")
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE User (
+            Username VARCHAR(255),
+            Password VARCHAR(255)
+        );
+    """)
+    conn.commit()
+    cur.execute("""
+        INSERT INTO User (Username, Password) 
+            VALUES ("admin", "admin");    
+    """)
+    conn.close()
 
 
 def get_db():
