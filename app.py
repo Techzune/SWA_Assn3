@@ -32,7 +32,7 @@ assets.register('scss_all', scss)
 # Set up database connection and teardown
 # (SOURCE: https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/)
 # ===============================================
-from db import *
+from db import *  # noqa: E402
 
 
 # ===============================================
