@@ -1,6 +1,7 @@
 # SW_Assn3
 Project for Software Architecture & Design course at Mississippi State University.
 
+For ease-of-implementation, this project uses Python 3, Flask, and Bootstrap 4.
 
 ## Authors
 Jordan Stremming,
