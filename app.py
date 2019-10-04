@@ -6,10 +6,8 @@
 # * sets up database connection (w/ teardown)
 # * launches development server
 #
-import os
-import sqlite3
 
-from flask import Flask, g
+from flask import Flask
 from flask_assets import Environment, Bundle
 
 from routes import *
@@ -34,39 +32,7 @@ assets.register('scss_all', scss)
 # Set up database connection and teardown
 # (SOURCE: https://flask.palletsprojects.com/en/1.1.x/patterns/sqlite3/)
 # ===============================================
-DATABASE = "./data.db"
-
-# if database does not exist, create tables
-if not os.path.exists(DATABASE):
-    conn = sqlite3.connect("./data.db")
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE User (
-            Username TEXT,
-            Password TEXT
-        );
-    """)
-    conn.commit()
-    cur.execute("""
-        INSERT INTO User (Username, Password) 
-            VALUES ('admin', 'admin');    
-    """)
-    conn.commit()
-    conn.close()
-
-
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect("./data.db")
-    return db
-
-
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
+from db import *
 
 
 # ===============================================
