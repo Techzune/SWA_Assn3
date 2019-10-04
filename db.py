@@ -23,7 +23,8 @@ if not os.path.exists(DATABASE):
     cur.execute("""
         CREATE TABLE User (
             Username TEXT,
-            Password TEXT
+            Password TEXT,
+            UNIQUE(Username)
         );
     """)
     conn.commit()
