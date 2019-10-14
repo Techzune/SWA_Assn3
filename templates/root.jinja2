@@ -40,35 +40,11 @@
         <a class="nav-item nav-link" href="#About">
           About
         </a>
-        <a class="nav-item nav-link" onclick="document.getElementById('loginID').style.display='block'"  href="#login">
-          Log In
-        </a>
       </div>
     </div>
 
   </div>
 </nav>
-
-<div id="loginID" class="modal">
-
-  <form class="modal-content animate" action="/action_page.php" method="post">
-    <div class="imgcontainer">
-      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-      <img src="img_avatar2.png" alt="Avatar" class="avatar">
-    </div>
-
-    <div class="container">
-      <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="uname" required>
-
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
-
-      <button type="submit">Login</button>
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
-    </div>
 
 {% block content_before %}
 {% endblock %}
@@ -82,17 +58,6 @@
 {% endblock %}
 
 <!-- javascript -->
-  <script>
-// Get the modal
-var modal = document.getElementById('loginID');
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-</script>
 <script src="{{ url_for('static', filename='bootstrap-4.3.1/js/jquery-3.4.1.slim.min.js') }}"></script>
 <script src="{{ url_for('static', filename='bootstrap-4.3.1/js/bootstrap.bundle.js') }}"></script>
 {% block extra_js %}
