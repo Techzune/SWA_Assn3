@@ -1,5 +1,5 @@
 # name:   shopping_cart.py
-# author:
+# author: Steven Huynh
 #
 # description
 #
