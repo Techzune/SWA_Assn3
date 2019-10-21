@@ -8,10 +8,11 @@ import os
 import sqlite3
 
 from flask import g
-
 from app import app
+from model.user import User
 
 # database file location
+
 DATABASE = "./data.db"
 
 
@@ -54,12 +55,12 @@ def create_db(force=False):
         db.commit()
 
         # insert Admin user
-        add_user("admin", "password", db)
+        add_user(User(username="admin", password="password"), db)
         # insert Sample Inventory item
         cur.execute("""
             INSERT INTO InventoryItem (ItemName, Description, Price, Category) 
                 VALUES ('Sample Item', 'Just your average item.', 10.00, 'TOYS');    
-        """)
+            """)
 
         db.commit()
         cur.close()
@@ -89,34 +90,63 @@ def close_connection(_):
         db.close()
 
 
-def add_user(username, password, db=None):
+def add_user(user, db=None):
     """
     Adds a user to the database.
 
-    :param username: String of username
-    :param password: String of password
+    :param user: User of user to insert
     :param db: optional, the database connection to commit to
     """
     db = db or get_db()
     cur = db.cursor()
     cur.execute("INSERT INTO User (Username, Password) VALUES (?, ?)",
-                [username, password])
+                [user.username, user.password])
     db.commit()
+    cur.close()
 
 
-def verify_user(username, password):
+def update_user_password(user, db=None):
+    """
+    Updates password for a User.
+    If User does not exist, will Insert user.
+
+    :param user: User of user to update
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("UPDATE User SET Password=? WHERE UserID=?",
+                [user.password, user.id_])
+    db.commit()
+    cur.close()
+
+    # if the update failed, insert it
+    if cur.rowcount == 0:
+        add_user(user, db)
+
+
+def verify_user(user, db=None):
     """
     Attempts to find a user with provided username and password.
 
-    :param username: String of username
-    :param password: String of password
-    :return: True, if the user exists.
+    :param user: User of user to find
+    :param db: optional, the database connection to commit to
+    :return: User, if the user exists. Otherwise, None.
     """
-    db = get_db()
+    db = db or get_db()
     cur = db.cursor()
-    cur.execute("SELECT * FROM User WHERE Username=? AND Password=?",
-                [username, password])
-    result = cur.rowcount() > 0
+
+    cur.execute("""
+        SELECT UserID, Username, Password 
+            FROM User 
+            WHERE Username=? AND Password=?
+        """, [user.username, user.password])
+
+    result = None
+    if cur.rowcount != 0:
+        # fetch the user
+        row = cur.fetchone()
+        result = User(id_=row[0], username=row[1], password=row[2])
+
     cur.close()
     return result
-
