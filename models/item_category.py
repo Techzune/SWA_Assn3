@@ -1,4 +1,4 @@
-# name:   category.py
+# name:   item_category.py
 # author: Jordan Stremming
 #
 # Enumerator for inventory items

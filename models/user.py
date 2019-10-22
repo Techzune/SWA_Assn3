@@ -1,7 +1,7 @@
 # name:   user.py
-# author:
+# author: Jordan Stremming
 #
-# description
+# Model for User account
 #
 
 

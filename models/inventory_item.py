@@ -1,7 +1,7 @@
 # name:   inventory_item.py
-# author:
+# author: Jordan Stremming
 #
-# description
+# Model for item in inventory
 #
 
 
