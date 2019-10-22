@@ -9,7 +9,9 @@ import sqlite3
 
 from flask import g
 from app import app
-from model.user import User
+from models import ItemCategory
+from models import InventoryItem
+from models import User
 
 # database file location
 
@@ -49,7 +51,8 @@ def create_db(force=False):
                 ItemName TEXT,
                 Description TEXT,
                 Price FLOAT,
-                Category TEXT
+                Category TEXT,
+                Quantity INTEGER
             );
         """)
         db.commit()
@@ -59,7 +62,7 @@ def create_db(force=False):
         # insert Sample Inventory item
         cur.execute("""
             INSERT INTO InventoryItem (ItemName, Description, Price, Category) 
-                VALUES ('Sample Item', 'Just your average item.', 10.00, 'TOYS');    
+            VALUES ('Sample Item', 'Just your average item.', 10.00, 'TOYS');    
             """)
 
         db.commit()
@@ -125,7 +128,7 @@ def update_user_password(user, db=None):
         add_user(user, db)
 
 
-def verify_user(user, db=None):
+def get_user(user, db=None):
     """
     Attempts to find a user with provided username and password.
 
@@ -138,9 +141,9 @@ def verify_user(user, db=None):
 
     cur.execute("""
         SELECT UserID, Username, Password 
-            FROM User 
-            WHERE Username=? AND Password=?
-        """, [user.username, user.password])
+        FROM User 
+        WHERE Username=? AND Password=?
+    """, [user.username, user.password])
 
     result = None
     if cur.rowcount != 0:
@@ -150,3 +153,77 @@ def verify_user(user, db=None):
 
     cur.close()
     return result
+
+
+def get_inventory(db=None):
+    """
+    Gets all InventoryItems.
+
+    :param db: optional, the database connection to commit to
+    :returns: list, all items in Inventory as InventoryItems
+    """
+    db = db or get_db()
+    cur = db.cursor()
+
+    cur.execute("""
+        SELECT ItemID, ItemName, Description, Price, Category, Quantity
+        FROM InventoryItem    
+    """)
+
+    result = []
+    for row in cur.fetchall():
+        try:
+            result.append(InventoryItem(id_=row[0], name=row[1], description=row[2],
+                                        price=row[3], category=ItemCategory[row[4]], qty=row[5]))
+        except Exception as e:
+            print("invalid inventory item:", e)
+
+    cur.close()
+    return result
+
+
+def add_item(item, db=None):
+    """
+    Adds an InventoryItem to the database.
+
+    :param item: InventoryItem to insert
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+
+    cur.execute("""
+        INSERT INTO InventoryItem (ItemName, Description, Price, Category, Quantity) 
+        VALUES (?, ?, ?, ?, ?)
+    """, [item.name, item.description, item.price, str(item.category), item.quantity])
+    db.commit()
+
+    cur.close()
+
+
+def update_item(item, db=None):
+    """
+    Updates attributes for an InventoryItem.
+    If InventoryItem does not exist, inserts instead.
+
+    :param item: InventoryItem to update
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        UPDATE InventoryItem
+        SET ItemName = ?,
+            Description = ?,
+            Price = ?,
+            Category = ?,
+            Quantity = ?
+        WHERE ItemID = ? 
+    """, [item.name, item.description, item.price, str(item.category), item.quantity, item.id_])
+    db.commit()
+    cur.close()
+
+    # if the update failed, insert it
+    if cur.rowcount == 0:
+        add_item(item, db)
+

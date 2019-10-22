@@ -6,7 +6,7 @@
 from enum import Enum
 
 
-class Category(Enum):
+class ItemCategory(Enum):
     HOUSEHOLD_ITEMS = 'Household Items',
     BOOKS = 'Books',
     TOYS = 'Toys',
