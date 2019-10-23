@@ -3,13 +3,13 @@
 #
 # Model for user's shopping cart
 #
-from models import InventoryItem, ShoppingCartItem, Purchase
+from models import ShoppingCartItem, Purchase
 
 
 class ShoppingCart:
     def __init__(self, username=None, items_dict=None):
         """
-        A user's shopping cart.
+        Creates a user's shopping cart.
 
         :param username: String, the username of the owner.
         :param items_dict: optional, dictionary {item_id, ShoppingCartItem}
