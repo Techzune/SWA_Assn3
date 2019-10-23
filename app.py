@@ -34,6 +34,8 @@ assets.register('scss_all', scss)
 # ===============================================
 from db import *  # noqa: E402
 
+# set force to True if you want database to be recreated on launch
+create_db(force=False)
 
 # ===============================================
 # Launch the development server
