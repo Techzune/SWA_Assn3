@@ -8,6 +8,6 @@ from .address import *
 from .inventory_item import *
 from .item_category import *
 from .purchase import *
-from .shopping_cart import *
 from .shopping_cart_item import *
+from .shopping_cart import *
 from .user import *
