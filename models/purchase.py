@@ -20,7 +20,7 @@ class Purchase:
         """
         self.id_ = id_
         self.username = username
-        self.items = items
+        self.items = items or []
         self.total_price = total_price
         self.credit_card = credit_card
         self.address = address

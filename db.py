@@ -6,10 +6,11 @@
 #
 import os
 import sqlite3
+from unittest import result
 
 from flask import g
 from app import app
-from models import ItemCategory
+from models import ItemCategory, Purchase, ShoppingCartItem, Address
 from models import InventoryItem
 from models import User
 
@@ -53,6 +54,29 @@ def create_db(force=False):
                 Price FLOAT,
                 Category TEXT,
                 Quantity INTEGER
+            );
+        """)
+        db.commit()
+        # create Purchase table
+        cur.execute("""
+            CREATE TABLE Purchase (
+                PurchaseID INTEGER PRIMARY KEY AUTOINCREMENT,
+                Username TEXT,
+                TotalPrice FLOAT,
+                CreditCard TEXT,
+                Address TEXT
+            );
+        """)
+        db.commit()
+        # create PurchaseItem table
+        cur.execute("""
+            CREATE TABLE PurchaseItem (
+                PurchaseID INTEGER PRIMARY KEY,
+                InventoryItemID INTEGER,
+                Price FLOAT,
+                Quantity INTEGER,
+                FOREIGN KEY (PurchaseID) REFERENCES Purchase (PurchaseID),
+                FOREIGN KEY (InventoryItemID) REFERENCES InventoryItem (ItemID)
             );
         """)
         db.commit()
@@ -226,4 +250,70 @@ def update_item(item, db=None):
     # if the update failed, insert it
     if cur.rowcount == 0:
         add_item(item, db)
+
+
+def get_purchase(purchase, db=None):
+    """
+    Gets a purchase from the database based on PurchaseID
+
+    :param purchase: Purchase, must have id
+    :param db: optional, the database connection
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        SELECT Username, TotalPrice, CreditCard, Address
+        FROM Purchase
+        WHERE PurchaseID = ?
+    """, [purchase.id_])
+
+    row = cur.fetchone()
+    try:
+        purchase = Purchase(id_=purchase.id_, username=row[0], total_price=row[1],
+                            credit_card=row[2], address=Address().from_str(row[3]))
+    except Exception as e:
+        print("invalid purchase:", e)
+
+    cur.execute("""
+        SELECT InventoryItemID, Price, Quantity
+        FROM PurchaseItem
+        WHERE PurchaseID = ?
+    """, [purchase.id_])
+
+    for row in cur.fetchall():
+        try:
+            purchase.items.append(ShoppingCartItem(item_id=row[0], price=row[1], qty=row[2]))
+        except Exception as e:
+            print("invalid purchase item:", e)
+
+    cur.close()
+    return result
+
+
+def add_purchase(purchase, db=None):
+    """
+    Inserts a purchase into the database.
+
+    :param purchase: Purchase, what to insert
+    :param db: optional, the database connection
+    """
+    db = db or get_db()
+    cur = db.cursor()
+
+    # insert the purchase
+    cur.execute("""
+        INSERT INTO Purchase (Username, TotalPrice, CreditCard, Address) 
+        VALUES (?, ?, ?, ?)    
+    """, [purchase.username, purchase.total_price, purchase.credit_card, purchase.address.to_str()])
+    purchase.id_ = cur.lastrowid
+
+    # insert all the items for the purchase
+    for item in purchase.items:
+        cur.execute("""
+            INSERT INTO PurchaseItem (PurchaseID, InventoryItemID, Price, Quantity) 
+            VALUES (?, ?, ?, ?)
+        """, [purchase.id_, item.item_id, item.qty, item.price])
+
+    db.commit()
+    cur.close()
 

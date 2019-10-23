@@ -21,3 +21,16 @@ class Address:
         self.city = city
         self.state = state
         self.zip_code = zip_code
+
+    def to_str(self):
+        return self.street + "||" + self.street2 + "||" + self.city + \
+               "||" + self.state + "||" + self.zip_code
+
+    def from_str(self, s):
+        split = s.split("||")
+        self.street = split[0]
+        self.street2 = split[1]
+        self.city = split[2]
+        self.state = split[3]
+        self.zip_code = split[4]
+        return self
