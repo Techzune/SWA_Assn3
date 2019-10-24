@@ -9,7 +9,6 @@ import sqlite3
 from unittest import result
 
 from flask import g
-from app import app
 from models import ItemCategory, Purchase, ShoppingCartItem, Address
 from models import InventoryItem
 from models import User
@@ -102,20 +101,6 @@ def get_db():
     if db is None:
         db = g._database = sqlite3.connect("./data.db")
     return db
-
-
-@app.teardown_appcontext
-def close_connection(_):
-    """
-    Automatically closes the connection for the database when app
-    shuts down.
-
-    :param _: unused parameter
-    """
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
-
 
 def add_user(user, db=None):
     """
