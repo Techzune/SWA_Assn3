@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="data" uuid="80238ac1-d155-4d76-a54c-41a6abc7c46d">
+    <data-source source="LOCAL" name="data" uuid="84523f10-3401-4eb4-9f9c-e28975466370">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
@@ -18,11 +18,11 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="data [2]" uuid="f57469bb-c9d7-4bdc-9121-32c75b40791f">
+    <data-source source="LOCAL" name="data.db" uuid="94cd9afd-17d3-48c6-8608-a4a08995b777">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Lizzy\Documents\GitHub\SWA_Assn3\data.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\OneDrive\Projects\py\SWA_Assn3\data.db.old</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>
