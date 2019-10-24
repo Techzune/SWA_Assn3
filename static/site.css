@@ -2938,33 +2938,6 @@ input[type="button"].btn-block {
     align-items: center;
     justify-content: space-between; }
 
-.login-container{
-  float: right;
-}
-
-.login-container button{
-    float: right;
-  padding: 6px;
-  margin-top: 8px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-.login-container button:hover {
-  background: #ccc;
-}
-
-.navbar input[type=text] {
-  padding: 6px;
-  margin-top: 8px;
-  font-size: 17px;
-  border: none;
-  width: 150px;
-}
-
 .navbar-brand {
   display: inline-block;
   padding-top: 0.32422rem;
