@@ -60,8 +60,8 @@
     {% if messages %}
       <div class="container mt-4">
           {% for category, message in messages %}
-            <div class="alert alert-{{category}} mb-1 alert-dismissible fade show" role="alert">
-              {{message}}
+            <div class="alert alert-{{ category }} mb-1 alert-dismissible fade show" role="alert">
+                {{ message }}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -86,28 +86,27 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+        <h4 class="modal-title">Sign in</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form method="post" action="/">
-        <div class="modal-body mx-3">
-          <div class="md-form mb-5">
-            <i class="fas fa-envelope prefix grey-text"></i>
-            <input name="username" id="defaultForm-username" class="form-control validate">
-            <label data-error="wrong" data-success="right" for="defaultForm-username">Username</label>
+        <div class="modal-body">
+          <div class=form-group">
+            <label for="login-username">Username</label>
+            <input name="username" id="login-username" class="form-control">
           </div>
-
-          <div class="md-form mb-4">
-            <i class="fas fa-lock prefix grey-text"></i>
-            <input name="password" type="password" id="defaultForm-pass" class="form-control validate">
-            <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
+          <div class="form-group mt-4">
+            <label for="login-pass">Password</label>
+            <input name="password" type="password" id="login-pass" class="form-control">
           </div>
-
         </div>
-        <div class="modal-footer d-flex justify-content-center">
-          <input type="submit" class="btn btn-primary" value="Login"/>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal" aria-label="Close">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary px-4">Login</button>
         </div>
       </form>
     </div>
