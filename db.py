@@ -6,8 +6,6 @@
 #
 import os
 import sqlite3
-from unittest import result
-
 from flask import g
 from models import ItemCategory, Purchase, ShoppingCartItem, Address
 from models import InventoryItem
@@ -148,11 +146,19 @@ def get_user(user, db=None):
     db = db or get_db()
     cur = db.cursor()
 
-    cur.execute("""
-        SELECT UserID, Username, Password 
-        FROM User 
-        WHERE Username=? AND Password=?
-    """, [user.username, user.password])
+    query = "SELECT UserID, Username, Password FROM User "
+    if user.id_ is not None:
+        # Find by ID
+        cur.execute(query + "WHERE UserID=?",
+                    [user.id_])
+    elif user.username is not None and user.password is None:
+        # Find by Username
+        cur.execute(query + "WHERE Username=?",
+                    [user.username])
+    else:
+        # Find by Username and Password
+        cur.execute(query + "WHERE Username=? AND Password=?",
+                    [user.username, user.password])
 
     result = None
     row = cur.fetchone()
@@ -272,7 +278,7 @@ def get_purchase(purchase, db=None):
             print("invalid purchase item:", e)
 
     cur.close()
-    return result
+    return purchase
 
 
 def add_purchase(purchase, db=None):

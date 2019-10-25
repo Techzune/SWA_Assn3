@@ -3,6 +3,14 @@
 @import "bootstrap-4.3.1/scss/bootstrap";
 @import "bootswatch-darkly/bootswatch";
 
+// custom alerts (Flask Flash)
+.alert-message {
+  @extend .alert-primary;
+}
+.alert-error {
+  @extend .alert-danger;
+}
+
 #in_autoScroll:hover {
   background-color: $dark;
   &.active {

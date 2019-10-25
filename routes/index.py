@@ -22,9 +22,9 @@ def index():
         user = db.get_user(User(username=username, password=password), db=db.get_db())
         if user is not None:
             login_user(user)
-            flask.flash("Logged in successfully")
+            flask.flash("Logged in successfully!", "success")
         else:
-            print("NOOT")
+            flask.flash("Invalid username or password.", "error")
 
     return render_template('index.jinja2')
 
@@ -32,4 +32,5 @@ def index():
 @routes.route('/logout')
 def logout():
     logout_user()
+    flask.flash("You are no longer logged in!", "success")
     return redirect('/')
