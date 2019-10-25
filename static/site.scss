@@ -1,7 +1,7 @@
 
-@import "bootswatch-darkly/variables";
+@import "bootswatch-flatly/variables";
 @import "bootstrap-4.3.1/scss/bootstrap";
-@import "bootswatch-darkly/bootswatch";
+@import "bootswatch-flatly/bootswatch";
 
 // custom alerts (Flask Flash)
 .alert-message {
@@ -9,11 +9,4 @@
 }
 .alert-error {
   @extend .alert-danger;
-}
-
-#in_autoScroll:hover {
-  background-color: $dark;
-  &.active {
-    background-color: darken($primary, 5%);
-  }
 }
