@@ -12,9 +12,20 @@ from models import User
 from . import routes
 
 
-@routes.route('/')
+@routes.route('/', methods=['GET', 'POST'])
 def index():
     """Home page"""
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        user = db.get_user(User(username=username, password=password), db=db.get_db())
+        if user is not None:
+            login_user(user)
+            flask.flash("Logged in successfully")
+        else:
+            print("NOOT")
+
     return render_template('index.jinja2')
 
 

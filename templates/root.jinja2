@@ -33,20 +33,28 @@
 
     <!-- collapsible nav menu -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
+      <div class="navbar-nav w-100">
         <a class="nav-item nav-link active" href="#Home">
           Home <span class="sr-only">(current)</span>
         </a>
         <a class="nav-item nav-link" href="#About">
           About
         </a>
-        <a class="nav-item nav-link" href=" #login">
-          Log In
-        </a>
+          {% if current_user.is_authenticated %}
+            <a class="nav-item nav-link ml-md-auto" href="/logout">
+              Logout
+            </a>
+          {% else %}
+            <a href="" class="nav-item nav-link ml-md-auto" data-toggle="modal"
+               data-target="#modalLoginForm">Login</a>
+          {% endif %}
+
       </div>
     </div>
 
   </div>
+
+
 </nav>
 
 {% block content_before %}
@@ -55,6 +63,40 @@
 <div class="container mt-4">
     {% block content %}
     {% endblock %}
+</div>
+
+<!-- login modal -->
+<div class="modal fade" id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="post" action="/">
+        <div class="modal-body mx-3">
+          <div class="md-form mb-5">
+            <i class="fas fa-envelope prefix grey-text"></i>
+            <input name="username" id="defaultForm-username" class="form-control validate">
+            <label data-error="wrong" data-success="right" for="defaultForm-username">Username</label>
+          </div>
+
+          <div class="md-form mb-4">
+            <i class="fas fa-lock prefix grey-text"></i>
+            <input name="password" type="password" id="defaultForm-pass" class="form-control validate">
+            <label data-error="wrong" data-success="right" for="defaultForm-pass">Password</label>
+          </div>
+
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <input type="submit" class="btn btn-primary" value="Login"/>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 {% block content_after %}
