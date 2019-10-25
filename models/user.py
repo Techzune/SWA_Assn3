@@ -3,6 +3,7 @@
 #
 # Model for User account
 #
+from flask_login._compat import unicode
 
 
 class User:
@@ -17,3 +18,11 @@ class User:
         self.id_ = id_
         self.username = username
         self.password = password
+        self.is_authenticated = True
+        self.is_active = True
+        self.is_anonymous = False
+
+    def get_id(self):
+        return unicode(self.id_)
+
+

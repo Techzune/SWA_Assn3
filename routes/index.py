@@ -3,8 +3,12 @@
 #
 # Provides the index routing of the application
 #
+import flask
+from flask import render_template, request, redirect
+from flask_login import login_user, current_user, logout_user
 
-from flask import render_template
+import db
+from models import User
 from . import routes
 
 
@@ -12,3 +16,9 @@ from . import routes
 def index():
     """Home page"""
     return render_template('index.jinja2')
+
+
+@routes.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
