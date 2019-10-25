@@ -155,9 +155,9 @@ def get_user(user, db=None):
     """, [user.username, user.password])
 
     result = None
-    if cur.rowcount != 0:
+    row = cur.fetchone()
+    if row is not None:
         # fetch the user
-        row = cur.fetchone()
         result = User(id_=row[0], username=row[1], password=row[2])
 
     cur.close()
