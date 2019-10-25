@@ -19,7 +19,7 @@ def index():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        user = db.get_user(User(username=username, password=password), db=db.get_db())
+        user = db.get_user(User(username=username, password=password))
         if user is not None:
             login_user(user)
             flask.flash("Logged in successfully!", "success")
