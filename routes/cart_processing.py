@@ -35,3 +35,8 @@ def purchase():
     user_purchase = cart.to_purchase(request.form['address'], request.form['credit_card'])
     add_purchase(user_purchase)
     return True
+
+
+@routes.route('/thicc')
+def thicc():
+    return render_template('dummy.jinja2')
