@@ -2,6 +2,7 @@
 .idea/*
 
 # Ignore caches and logs
+__pycache__/*
 /static/.webassets-cache/
 *.log
 
