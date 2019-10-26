@@ -8,7 +8,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 
 import db
-from models import User, InventoryItem, ShoppingCartItem
+from models import User, InventoryItem, ShoppingCartItem, Purchase, Address
 from . import routes
 
 
@@ -78,6 +78,40 @@ def cart_update():
         except Exception:
             continue
     return redirect('/cart')
+
+
+@routes.route('/cart/purchase', methods=['POST'])
+def cart_purchase():
+    credit_card = request.form.get("card")
+    street = request.form.get("address")
+    street2 = request.form.get("address2")
+    city = request.form.get("city")
+    state = request.form.get("state")
+    zip_code = request.form.get("zip")
+
+    user = db.get_user(User(current_user.get_id()))
+    user_cart = db.get_shopping_cart(user)
+
+    print([credit_card, street, street2, city, state, zip_code])
+
+    if len(user_cart.items) == 0:
+        flask.flash("You don't have anything to purchase!", "info")
+
+    elif '' not in [credit_card, street, city, state, zip_code]:
+        address = Address(street=street, street2=street2, city=city, state=state, zip_code=zip_code)
+
+        purchase = Purchase(username=user.username, items=user_cart.items,
+                            total_price=user_cart.total_price, address=address,
+                            credit_card=credit_card)
+
+        db.add_purchase(purchase)
+        db.clear_shopping_cart(user)
+        flask.flash("Purchase complete!", "success")
+
+    else:
+        flask.flash("Invalid purchase! Did you fill all fields?", "error")
+
+    return redirect("/cart")
 
 
 @routes.route('/history')

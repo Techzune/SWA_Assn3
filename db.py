@@ -359,6 +359,25 @@ def update_item(item, db=None):
         add_item(item, db)
 
 
+def remove_item(item, qty=1, db=None):
+    """
+    Removes qty of InventoryItem from db.
+
+    :param item: InventoryItem to update
+    :param qty: int, quantity to remove. Defaults to 1.
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        UPDATE InventoryItem
+        SET Quantity = Quantity - ?
+        WHERE ItemID = ? 
+    """, [qty, item.id_])
+    db.commit()
+    cur.close()
+
+
 def get_shopping_cart(user, db=None):
     """
     Gets all ShoppingCartItems for user
@@ -384,6 +403,23 @@ def get_shopping_cart(user, db=None):
 
     cur.close()
     return cart
+
+
+def clear_shopping_cart(user, db=None):
+    """
+    Removes all ShoppingCartItems for user
+
+    :param user: User, the user to request for
+    :param db: optional, the database connection
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        DELETE FROM ShoppingCartItem
+            WHERE UserID=?
+    """, [user.id_])
+    db.commit()
+    cur.close()
 
 
 def get_purchase(purchase, db=None):
@@ -447,7 +483,9 @@ def add_purchase(purchase, db=None):
         cur.execute("""
             INSERT INTO PurchaseItem (PurchaseID, InventoryItemID, Price, Quantity) 
             VALUES (?, ?, ?, ?)
-        """, [purchase.id_, item.item_id, item.qty, item.price])
+        """, [purchase.id_, item.item.id_, item.qty, item.price])
+        # remove from stock
+        remove_item(item.item, item.qty, db)
 
     db.commit()
     cur.close()
