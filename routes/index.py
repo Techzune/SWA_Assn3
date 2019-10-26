@@ -26,7 +26,7 @@ def index():
         else:
             flask.flash("Invalid username or password.", "error")
 
-    return render_template('index.jinja2')
+    return redirect('/inventory')
 
 
 @routes.route('/logout')
