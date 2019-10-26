@@ -13,7 +13,7 @@
             <h5 class="card-title">{{ i.name }}</h5>
             <p class="card-text">{{ i.description }}</p>
             <p class="mt-auto">Price: {{ i.price_as_str }} | Stock: {{ i.quantity }} </p>
-            <button type="button" class="btn btn-primary mt-auto">Add to Cart</button>
+            <a href="/cart/add?id={{ i.id_ }}" role="button" class="btn btn-primary mt-auto">Add to Cart</a>
           </div>
         </div>
       </div>

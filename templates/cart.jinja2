@@ -8,11 +8,11 @@
       <h2 class="card-title mb-4">Your shopping cart</h2>
 
       {# LIST EACH ITEM #}
-      {% for cart_item in cart.list_all() %}
+      {% for cart_item in cart.items %}
         <div class="card card-body">
           <div class="row">
             <h5 class="col card-title text-uppercase">{{ cart_item.item.name }}</h5>
-            <h4 class="col text-right card-title text-uppercase">{{ cart_item.price }}</h4>
+            <h4 class="col text-right card-title text-uppercase">{{ cart_item.price_as_str }}</h4>
           </div>
           <div class="row">
             <p class="col">{{ cart_item.item.description }}</p>
@@ -26,7 +26,7 @@
       {# total #}
       <div class="row mt-4 px-3">
         <h4 class="col">Total:</h4>
-        <h4 class="col text-right"><b>{{ cart.total }}</b></h4>
+        <h4 class="col text-right"><b>{{ cart.total_price }}</b></h4>
       </div>
     </div>
 

@@ -3,6 +3,9 @@
 #
 # Model for item in shopping cart
 #
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class ShoppingCartItem:
@@ -17,3 +20,7 @@ class ShoppingCartItem:
         self.item = item
         self.qty = qty
         self.price = price
+
+    @property
+    def price_as_str(self):
+        return locale.currency(self.price)

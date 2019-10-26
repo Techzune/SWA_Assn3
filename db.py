@@ -80,7 +80,7 @@ def create_db(force=False):
         # create ShoppingCartItem table
         cur.execute("""
             CREATE TABLE ShoppingCartItem (
-                UserID INTEGER PRIMARY KEY,
+                UserID INTEGER,
                 InventoryItemID INTEGER,
                 Price FLOAT,
                 Quantity INTEGER,
@@ -252,6 +252,59 @@ def add_item(item, db=None):
     cur.close()
 
 
+def add_to_cart(user, item, qty=1, db=None):
+    """
+    Adds an InventoryItem to user's shopping cart.
+
+    :param user: User
+    :param item: InventoryItem to insert
+    :param qty: int, quantity to insert
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        UPDATE ShoppingCartItem
+           SET Quantity = Quantity + ?
+         WHERE UserID=?
+           AND InventoryItemID=?
+    """, [qty, user.id_, item.id_])
+
+    if cur.rowcount == 0:
+        cur.execute("""
+            INSERT INTO ShoppingCartItem (UserID, InventoryItemID, Price, Quantity)
+            VALUES (?, ?, ?, ?)
+        """, [user.id_, item.id_, item.price, qty])
+
+    db.commit()
+    cur.close()
+
+
+def remove_from_cart(user, item, qty=1, db=None):
+    """
+    Removes a ShoppingCartItem from user's shopping cart.
+
+    :param user: User
+    :param item: ShoppingCartItem to remove
+    :param qty: int, quantity to remove
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        UPDATE ShoppingCartItem
+           SET Quantity = Quantity - ?
+         WHERE UserID=?
+           AND InventoryItemID=?
+    """, [qty, user.id_, item.item.id_])
+    cur.execute("""
+        DELETE FROM ShoppingCartItem
+        WHERE Quantity < 1
+    """)
+    db.commit()
+    cur.close()
+
+
 def update_item(item, db=None):
     """
     Updates attributes for an InventoryItem.
@@ -298,8 +351,7 @@ def get_shopping_cart(user, db=None):
     for row in cur.fetchall():
         try:
             item = get_inventory_item(InventoryItem(id_=row[0]), db)
-            item.price = row[1]
-            cart.add_inventory_item(item, row[2])
+            cart.items.append(ShoppingCartItem(item=item, price=row[1], qty=row[2]))
         except Exception as e:
             print("invalid purchase item:", e)
 

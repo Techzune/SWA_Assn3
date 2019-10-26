@@ -8,7 +8,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 
 import db
-from models import User
+from models import User, InventoryItem, ShoppingCartItem
 from . import routes
 
 
@@ -41,6 +41,29 @@ def logout():
 @login_required
 def cart():
     return render_template('cart.jinja2', cart=db.get_shopping_cart(user=User(id_=current_user.get_id())))
+
+
+@routes.route('/cart/add', methods=['GET'])
+def cart_add():
+    if request.args.get('id') is None:
+        return redirect('/inventory')
+
+    db.add_to_cart(user=User(current_user.get_id()),
+                   item=db.get_inventory_item(InventoryItem(id_=request.args.get('id'))))
+    return redirect('/cart')
+
+
+@routes.route('/cart/remove', methods=['GET'])
+def cart_remove():
+    if request.args.get('id') is None:
+        return redirect('/cart')
+
+    id_ = request.args.get('id')
+    qty = request.args.get('qty')
+
+    db.remove_from_cart(user=User(current_user.get_id()),
+                        item=ShoppingCartItem(item=InventoryItem(id_=id_), qty=qty))
+    return redirect('/cart')
 
 
 @routes.route('/history')
