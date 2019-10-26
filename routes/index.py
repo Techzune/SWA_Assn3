@@ -8,7 +8,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user, current_user, logout_user
 
 import db
-from models import User
+from models import User, ShoppingCart
 from . import routes
 
 
@@ -35,9 +35,11 @@ def logout():
     flask.flash("You are no longer logged in!", "success")
     return redirect('/')
 
+
 @routes.route('/cart')
 def cart():
-    return render_template('cart.jinja2')
+    return render_template('cart.jinja2', cart=ShoppingCart())
+
 
 @routes.route('/history')
 def history():
