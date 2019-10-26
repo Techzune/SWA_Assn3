@@ -115,7 +115,8 @@ def cart_purchase():
 @routes.route('/history')
 @login_required
 def history():
-    return render_template('history.jinja2')
+    user = db.get_user(User(current_user.get_id()))
+    return render_template('history.jinja2', purchases=db.get_user_purchases(user))
 
 
 @routes.route('/inventory')

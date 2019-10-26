@@ -483,9 +483,44 @@ def add_purchase(purchase, db=None):
         cur.execute("""
             INSERT INTO PurchaseItem (PurchaseID, InventoryItemID, Price, Quantity) 
             VALUES (?, ?, ?, ?)
-        """, [purchase.id_, item.item.id_, item.qty, item.price])
+        """, [purchase.id_, item.item.id_, item.price, item.qty])
         # remove from stock
         remove_item(item.item, item.qty, db)
 
     db.commit()
     cur.close()
+
+
+def get_user_purchases(user, db=None):
+    """
+    Gets all purchases by user.
+
+    :param user: User, the user to find purchases for
+    :param db: optional, the database connection
+    """
+    db = db or get_db()
+    cur = db.cursor()
+
+    # insert the purchase
+    cur.execute("""
+        SELECT PurchaseID, TotalPrice, CreditCard, Address
+        FROM Purchase
+        WHERE Username=? 
+    """, [user.username])
+
+    purchases = []
+    for row1 in cur.fetchall():
+        purchase = Purchase(username=user.username, id_=row1[0], total_price=row1[1],
+                            credit_card=row1[2], address=Address().from_str(row1[3]))
+        cur.execute("""
+            SELECT InventoryItemID, Price, Quantity
+            FROM PurchaseItem
+            WHERE PurchaseID=?
+        """, [purchase.id_])
+        for row2 in cur.fetchall():
+            item = get_inventory_item(InventoryItem(row2[0]), db)
+            purchase.items.append(ShoppingCartItem(item=item, price=row2[1], qty=row2[2]))
+        purchases.append(purchase)
+
+    cur.close()
+    return purchases

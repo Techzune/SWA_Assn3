@@ -3,6 +3,9 @@
 #
 # description
 #
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class Purchase:
@@ -24,3 +27,7 @@ class Purchase:
         self.total_price = total_price
         self.credit_card = credit_card
         self.address = address
+
+    @property
+    def total_price_as_str(self):
+        return locale.currency(self.total_price)
