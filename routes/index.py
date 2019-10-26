@@ -92,8 +92,6 @@ def cart_purchase():
     user = db.get_user(User(current_user.get_id()))
     user_cart = db.get_shopping_cart(user)
 
-    print([credit_card, street, street2, city, state, zip_code])
-
     if len(user_cart.items) == 0:
         flask.flash("You don't have anything to purchase!", "info")
 
