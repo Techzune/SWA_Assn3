@@ -16,8 +16,10 @@
           </div>
           <div class="row">
             <p class="col">{{ cart_item.item.description }}</p>
-            <form class="col-1 m-2 ml-auto">
-              <input class="text-right form-control form-control-sm" value="{{ cart_item.qty }}"/>
+            <form class="col-1 m-2 ml-auto" method="get" action="/cart/update">
+              <input name="{{ cart_item.item.id_ }}" class="text-right form-control form-control-sm"
+                     value="{{ cart_item.qty }}"/>
+              <input type="submit" class="btn btn-sm btn-secondary mt-1" value="Update">
             </form>
           </div>
         </div>

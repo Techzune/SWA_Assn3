@@ -62,7 +62,21 @@ def cart_remove():
     qty = request.args.get('qty')
 
     db.remove_from_cart(user=User(current_user.get_id()),
-                        item=ShoppingCartItem(item=InventoryItem(id_=id_), qty=qty))
+                        item=ShoppingCartItem(item=InventoryItem(id_=id_)), qty=qty)
+    return redirect('/cart')
+
+
+@routes.route('/cart/update', methods=['GET'])
+def cart_update():
+    for id_, qty in request.args.items():
+        # this makes sure we only use ints
+        # noinspection PyBroadException
+        try:
+            qty = int(qty)
+            db.update_cart(user=User(current_user.get_id()), item=ShoppingCartItem(item=InventoryItem(id_=id_)),
+                           qty=qty)
+        except Exception:
+            continue
     return redirect('/cart')
 
 

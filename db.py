@@ -305,6 +305,31 @@ def remove_from_cart(user, item, qty=1, db=None):
     cur.close()
 
 
+def update_cart(user, item, qty=1, db=None):
+    """
+    Updates a ShoppingCartItem in user's shopping cart.
+
+    :param user: User
+    :param item: ShoppingCartItem to update
+    :param qty: int, new quantity
+    :param db: optional, the database connection to commit to
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        UPDATE ShoppingCartItem
+           SET Quantity = ?
+         WHERE UserID=?
+           AND InventoryItemID=?
+    """, [qty, user.id_, item.item.id_])
+    cur.execute("""
+        DELETE FROM ShoppingCartItem
+        WHERE Quantity < 1
+    """)
+    db.commit()
+    cur.close()
+
+
 def update_item(item, db=None):
     """
     Updates attributes for an InventoryItem.
