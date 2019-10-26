@@ -94,8 +94,8 @@ def create_db(force=False):
         add_user(User(username="admin", password="password"), db)
         # insert Sample Inventory item
         cur.execute("""
-            INSERT INTO InventoryItem (ItemName, Description, Price, Category) 
-            VALUES ('Sample Item', 'Just your average item.', 10.00, 'TOYS');    
+            INSERT INTO InventoryItem (ItemName, Description, Price, Category, Quantity) 
+            VALUES ('Sample Item', 'Just your average item.', 10.00, 'TOYS', 10);    
             """)
 
         db.commit()
