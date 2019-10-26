@@ -92,11 +92,14 @@ def create_db(force=False):
 
         # insert Admin user
         add_user(User(username="admin", password="password"), db)
-        # insert Sample Inventory item
-        cur.execute("""
-            INSERT INTO InventoryItem (ItemName, Description, Price, Category, Quantity) 
-            VALUES ('Sample Item', 'Just your average item.', 10.00, 'TOYS', 10);    
-            """)
+
+        # insert Sample Inventory items
+        add_item(InventoryItem(name="Apple", description="One a day is 19g of sugar!", price=1.25,
+                               category=ItemCategory.TOYS, qty=23), db)
+        add_item(InventoryItem(name="Book", description="That's a nice cover. I might read that.", price=42.11,
+                               category=ItemCategory.BOOKS, qty=2), db)
+        add_item(InventoryItem(name="Raspberry Pi", description="What do you do with this?", price=3.14,
+                               category=ItemCategory.SMALL_ELECTRONICS, qty=99), db)
 
         db.commit()
         cur.close()
@@ -242,13 +245,12 @@ def add_item(item, db=None):
     """
     db = db or get_db()
     cur = db.cursor()
-
+    print("Adding", [item.name, item.description, item.price, item.category.value, item.quantity])
     cur.execute("""
         INSERT INTO InventoryItem (ItemName, Description, Price, Category, Quantity) 
         VALUES (?, ?, ?, ?, ?)
     """, [item.name, item.description, item.price, str(item.category), item.quantity])
     db.commit()
-
     cur.close()
 
 

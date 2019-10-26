@@ -9,13 +9,13 @@
 
       {# LIST EACH ITEM #}
       {% for cart_item in cart.items %}
-        <div class="card card-body">
+        <div class="card card-body mt-3">
           <div class="row">
             <h5 class="col card-title text-uppercase">{{ cart_item.item.name }}</h5>
             <h4 class="col text-right card-title text-uppercase">{{ cart_item.price_as_str }}</h4>
           </div>
           <div class="row">
-            <p class="col">{{ cart_item.item.description }}</p>
+            <p class="col text-muted">{{ cart_item.item.description }}</p>
             <form class="col-1 m-2 ml-auto" method="get" action="/cart/update">
               <input name="{{ cart_item.item.id_ }}" class="text-right form-control form-control-sm"
                      value="{{ cart_item.qty }}"/>
