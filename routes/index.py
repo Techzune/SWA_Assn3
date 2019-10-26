@@ -73,8 +73,13 @@ def cart_update():
         # noinspection PyBroadException
         try:
             qty = int(qty)
-            db.update_cart(user=User(current_user.get_id()), item=ShoppingCartItem(item=InventoryItem(id_=id_)),
-                           qty=qty)
+            inv_item = db.get_inventory_item(InventoryItem(id_))
+            if inv_item.quantity >= qty:
+                db.update_cart(user=User(current_user.get_id()), item=ShoppingCartItem(item=inv_item),
+                               qty=qty)
+            else:
+                flask.flash("<b>Exceeds stock:</b> {} has no more than {} items available.".format(inv_item.name, inv_item.quantity),
+                            "warning")
         except Exception:
             continue
     return redirect('/cart')
@@ -98,16 +103,23 @@ def cart_purchase():
     elif '' not in [credit_card, street, city, state, zip_code]:
         address = Address(street=street, street2=street2, city=city, state=state, zip_code=zip_code)
 
+        # make sure int zip code
+        try:
+            int(zip_code)
+        except ValueError:
+            flask.flash("Invalid zip code.", "error")
+            return redirect("/cart")
+
         purchase = Purchase(username=user.username, items=user_cart.items,
                             total_price=user_cart.total_price, address=address,
                             credit_card=credit_card)
 
         db.add_purchase(purchase)
         db.clear_shopping_cart(user)
-        flask.flash("Purchase complete!", "success")
+        flask.flash("<b>Success:</b> Purchase complete!", "success")
 
     else:
-        flask.flash("Invalid purchase! Did you fill all fields?", "error")
+        flask.flash("<b>Error:</b> Invalid purchase! Did you fill all fields?", "error")
 
     return redirect("/cart")
 
@@ -116,7 +128,9 @@ def cart_purchase():
 @login_required
 def history():
     user = db.get_user(User(current_user.get_id()))
-    return render_template('history.jinja2', purchases=db.get_user_purchases(user))
+    purchases = db.get_user_purchases(user) or []
+    purchases.reverse()
+    return render_template('history.jinja2', purchases=purchases)
 
 
 @routes.route('/inventory')
