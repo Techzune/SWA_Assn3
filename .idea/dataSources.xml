@@ -35,11 +35,11 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="data [2]" uuid="f57469bb-c9d7-4bdc-9121-32c75b40791f">
+    <data-source source="LOCAL" name="data [2]" uuid="0c74e1f5-2f83-4eb7-b34d-442d392e071e">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\Lizzy\Documents\GitHub\SWA_Assn3\data.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\apren\PycharmProjects\SWA_Assn3\data.db</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>
