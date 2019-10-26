@@ -8,6 +8,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user, current_user, logout_user, login_required
 
 import db
+from models import User,InventoryItem,ItemCategory
 from models import User, ShoppingCart
 from . import routes
 
@@ -47,3 +48,8 @@ def cart():
 @login_required
 def history():
     return render_template('history.jinja2')
+
+@routes.route('/inventory')
+def inventory():
+
+    return render_template('inventory.jinja2', item = db.get_inventory())
