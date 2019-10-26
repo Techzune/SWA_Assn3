@@ -3,7 +3,9 @@
 #
 # Model for user's shopping cart
 #
-from models import Purchase
+from models import Purchase, locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class ShoppingCart:
@@ -27,6 +29,10 @@ class ShoppingCart:
         for item in self.items:
             price += (item.price or 0) * (item.qty or 1)
         return price
+
+    @property
+    def total_price_as_str(self):
+        return locale.currency(self.total_price)
 
     def to_purchase(self, address, credit_card_num):
         """
