@@ -34,3 +34,11 @@ def logout():
     logout_user()
     flask.flash("You are no longer logged in!", "success")
     return redirect('/')
+
+@routes.route('/cart')
+def cart():
+    return render_template('cart.jinja2')
+
+@routes.route('/history')
+def history():
+    return render_template('history.jinja2')

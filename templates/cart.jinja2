@@ -1,0 +1,74 @@
+{% extends "root.jinja2" %}
+{% block title %}Cart{% endblock %}
+
+{% block content %}<style>
+    html,body {
+      padding:0;
+      margin:0;
+    }
+    #cart-listing {
+      font-family: inherit;
+      box-sizing: border-box;
+      padding: 15px;
+    }
+    ul.cart-ul {
+      list-style-type:none;
+      font-family: inherit;
+      margin:0;
+      padding:0;
+    }
+    ul.cart-ul .cart-item {
+      font-family:inherit;
+      border: 1px solid #fff;
+      box-sizing:border-box;
+      padding: 15px;
+    }
+    ul.cart-ul .cart-item:hover {
+      border-color: #333;
+    }
+    ul.cart-ul .cart-item .cart-title {
+      text-transform: uppercase;
+      padding: 0;
+      margin: 0;
+    }
+    ul.cart-ul .cart-item div p.cart-desc {
+
+    }
+  </style>
+ <div id="cart-listing">
+    <h2>Shopping Cart</h2>
+    <ul class="cart-ul">
+      <li class="cart-item" id="cart-item-0">
+          <h4 class="cart-title">Cart Item #1</h4>
+        <div>
+          <p class="cart-desc">This is the description.</p>
+          <b>
+            <p class="cart-price">$99.01</p>
+          </b>
+        </div>
+      </li>
+      <li class="cart-item" id="cart-item-1">
+          <h4 class="cart-title">Cart Item #2</h4>
+        <div>
+          <p class="cart-desc">This is the description.</p>
+          <b>
+            <p class="cart-price">$99.01</p>
+          </b>
+        </div>
+      </li>
+      <li class="cart-item" id="cart-item-2">
+          <h4 class="cart-title">Cart Item #3</h4>
+        <div>
+          <p class="cart-desc">This is the description.</p>
+          <b>
+            <p class="cart-price">$99.01</p>
+          </b>
+        </div>
+      </li>
+    </ul>
+    <hr>
+    <h2>Your Shopping Cart Total: <b>$100.00</b></h2>
+  </div>
+
+{% endblock %}
+
