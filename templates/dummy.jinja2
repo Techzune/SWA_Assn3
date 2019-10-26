@@ -1,5 +1,5 @@
 {% extends "root.jinja2" %}
-{% block title %}Home{% endblock %}
+{% block title %}thicc{% endblock %}
 
 {% block content %}
 
@@ -7,10 +7,13 @@
     <div class="card-body">
       <h4 class="card-title">Welcome to our home</h4>
       <p class="card-text text-muted">
-        You're sad
+        <button id="purchase">Purchase</button>
+        <button id="generatecart">Generate Cart</button>
       </p>
     </div>
   </div>
+
+  <script src="/shopping_cart.js"></script>
 
 {% endblock %}
 
