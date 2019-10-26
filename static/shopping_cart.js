@@ -6,11 +6,6 @@
 *
 */
 
-<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-
 // Check for pre-existing cart data in localstorage
 // yes: load it into shopping_cart object
 // no: load empty shopping_cart object
@@ -23,6 +18,7 @@ var btn_gen = document.getElementById("generatecart");
 btn_purchase.onclick = purchase();
 
 btn_gen.onclick = function(){
+  console.log("btn_gen clicked");
   for(var i = 0; i < 1; i++){
       add_item("fuck", JSON.stringify({ "item_id": "fuck", "qty": 29, "price": 5}))
   }
