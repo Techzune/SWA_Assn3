@@ -7,7 +7,7 @@
 import os
 import sqlite3
 from flask import g
-from models import ItemCategory, Purchase, ShoppingCartItem, Address
+from models import ItemCategory, Purchase, ShoppingCartItem, Address, ShoppingCart
 from models import InventoryItem
 from models import User
 
@@ -77,6 +77,18 @@ def create_db(force=False):
             );
         """)
         db.commit()
+        # create ShoppingCartItem table
+        cur.execute("""
+            CREATE TABLE ShoppingCartItem (
+                UserID INTEGER PRIMARY KEY,
+                InventoryItemID INTEGER,
+                Price FLOAT,
+                Quantity INTEGER,
+                FOREIGN KEY (UserID) REFERENCES User (UserID),
+                FOREIGN KEY (InventoryItemID) REFERENCES InventoryItem (ItemID)
+            );
+        """)
+        db.commit()
 
         # insert Admin user
         add_user(User(username="admin", password="password"), db)
@@ -99,6 +111,7 @@ def get_db():
     if db is None:
         db = g._database = sqlite3.connect("./data.db")
     return db
+
 
 def add_user(user, db=None):
     """
@@ -168,6 +181,28 @@ def get_user(user, db=None):
 
     cur.close()
     return result
+
+
+def get_inventory_item(item, db=None):
+    """
+    Gets a singular InventoryItem
+    :param item: InventoryItem
+    :param db: optional
+    :return: InventoryItem
+    """
+    db = db or get_db()
+    cur = db.cursor()
+
+    cur.execute("""
+        SELECT ItemID, ItemName, Description, Price, Category, Quantity
+        FROM InventoryItem
+        WHERE ItemID=?   
+    """, [item.id_])
+    row = cur.fetchone()
+    if row is not None:
+        return InventoryItem(id_=row[0], name=row[1], description=row[2],
+                             price=row[3], category=ItemCategory[row[4]], qty=row[5])
+    return None
 
 
 def get_inventory(db=None):
@@ -243,6 +278,34 @@ def update_item(item, db=None):
         add_item(item, db)
 
 
+def get_shopping_cart(user, db=None):
+    """
+    Gets all ShoppingCartItems for user
+
+    :param user: User, the user to request for
+    :param db: optional, the database connection
+    """
+    db = db or get_db()
+    cur = db.cursor()
+    cur.execute("""
+        SELECT InventoryItemID, Price, Quantity
+        FROM ShoppingCartItem
+        WHERE UserID = ?
+    """, [user.id_])
+
+    cart = ShoppingCart(user)
+    for row in cur.fetchall():
+        try:
+            item = get_inventory_item(InventoryItem(id_=row[0]), db)
+            item.price = row[1]
+            cart.add_inventory_item(item, row[2])
+        except Exception as e:
+            print("invalid purchase item:", e)
+
+    cur.close()
+    return cart
+
+
 def get_purchase(purchase, db=None):
     """
     Gets a purchase from the database based on PurchaseID
@@ -268,12 +331,13 @@ def get_purchase(purchase, db=None):
     cur.execute("""
         SELECT InventoryItemID, Price, Quantity
         FROM PurchaseItem
-        WHERE PurchaseID = ?
+        WHERE pi.PurchaseID = ?
     """, [purchase.id_])
 
     for row in cur.fetchall():
         try:
-            purchase.items.append(ShoppingCartItem(item_id=row[0], price=row[1], qty=row[2]))
+            item = get_inventory_item(InventoryItem(id_=row[0]), db)
+            purchase.items.append(ShoppingCartItem(item=item, price=row[1], qty=row[2]))
         except Exception as e:
             print("invalid purchase item:", e)
 
@@ -307,4 +371,3 @@ def add_purchase(purchase, db=None):
 
     db.commit()
     cur.close()
-

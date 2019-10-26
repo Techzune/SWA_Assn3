@@ -7,14 +7,14 @@ from models import ShoppingCartItem, Purchase
 
 
 class ShoppingCart:
-    def __init__(self, username=None, items_dict=None):
+    def __init__(self, user=None, items_dict=None):
         """
         Creates a user's shopping cart.
 
-        :param username: String, the username of the owner.
+        :param user: User, the associate user of the owner.
         :param items_dict: optional, dictionary {item_id, ShoppingCartItem}
         """
-        self.username = username
+        self.user = user
         self.items_dict = items_dict or {}
 
     def add_inventory_item(self, inv_item, qty=1):
@@ -29,7 +29,7 @@ class ShoppingCart:
             self.items_dict[inv_item.id_].qty += qty
         else:
             item = ShoppingCartItem
-            item.item_id = inv_item.id_
+            item.item = inv_item
             item.price = inv_item.price
             item.qty = qty
             self.items_dict[inv_item.id_] = item
@@ -74,6 +74,6 @@ class ShoppingCart:
         :param credit_card_num: String, credit card number
         :return: Purchase, associated with order
         """
-        return Purchase(username=self.username, items=self.list_all(),
+        return Purchase(username=self.user.username, items=self.list_all(),
                         address=address, credit_card=credit_card_num,
                         total_price=self.total_price())

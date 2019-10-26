@@ -40,7 +40,7 @@ def logout():
 @routes.route('/cart')
 @login_required
 def cart():
-    return render_template('cart.jinja2', cart=ShoppingCart())
+    return render_template('cart.jinja2', cart=db.get_shopping_cart(user=User(id_=current_user.get_id())))
 
 
 @routes.route('/history')
