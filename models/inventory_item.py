@@ -5,7 +5,7 @@
 #
 
 
-class InventoryItem:
+class InventoryItem():
     def __init__(self, id_=None, name="", description="",
                  price=0.00, category=None, qty=0):
         """

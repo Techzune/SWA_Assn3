@@ -8,7 +8,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user, current_user, logout_user
 
 import db
-from models import User
+from models import User,InventoryItem,ItemCategory
 from . import routes
 
 
@@ -34,3 +34,8 @@ def logout():
     logout_user()
     flask.flash("You are no longer logged in!", "success")
     return redirect('/')
+
+@routes.route('/inventory')
+def inventory():
+    
+    return render_template('inventory.jinja2', item = db.get_inventory())
