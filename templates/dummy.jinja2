@@ -7,12 +7,22 @@
     <div class="card-body">
       <h4 class="card-title">dummy</h4>
       <p class="card-text text-muted">
-        <button id="purchase">Purchase</button>
-        <button id="generatecart">Generate Cart</button>
+        <form method="post" action="{{ url_for('routes.purchase') }}" id="form1">
+          <input type="hidden" id="cart" value=>
+          <input type="hidden" id="username" value="admin">
+          <input type="hidden" id="address" value="123 Ilikecake">
+          <input type="hidden" id="credit_card" value="123456789">
+          <input type="text" id="fuckyou" value="">
+          <input type="submit" id="purchase">Purchase</input>
+        </form>
+                <button id="generatecart">Generate Cart</button>
+      <button id="altp">ALT Purchase</button>
+      <button id="clear"> Clear local storage</button>
       </p>
     </div>
   </div>
 
+  <script src="{{ url_for('static', filename='jquery-3.4.1.js') }}"></script>
   <script src="{{ url_for('static', filename='shopping_cart.js') }}"></script>
 
 {% endblock %}

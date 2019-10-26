@@ -12,8 +12,12 @@
 
 // functions that will transfer button presses into their .py
 
-var btn_purchase = document.getElementById("purchase");
+var btn_purchase = document.getElementById("altp");
 var btn_gen = document.getElementById("generatecart");
+var btn_clear = document.getElementById("clear");
+var form1 = document.getElementById("form1");
+
+btn_clear.onclick = clear_cart();
 
 btn_purchase.onclick = purchase();
 
@@ -23,7 +27,6 @@ btn_gen.onclick = function(){
       add_item("fuck", JSON.stringify({ "item_id": "fuck", "qty": 29, "price": 5}))
   }
 };
-
 
 // add one more of an item
 // if the item doesn't exist in cart, then create it
@@ -41,7 +44,6 @@ function add_item(item_id, item_stringify){
     test_item = JSON.stringify(item);
     localStorage.setItem(item_id, test_item);
   }
-  localStorage.setItem(item_id, item_stringify);
 }
 
 // removes all of an item from the cart
@@ -68,11 +70,11 @@ function get_cart(){
 function purchase(){
   // get cart information and make it a string
   var cart_items = JSON.stringify(get_cart());
-  var username = document.getElementById('username')
+  var username = document.getElementById('username');
 
-  // send the information to cart_processing.py
+/*  // send the information to cart_processing.py
   $.ajax({
-    url: 'file',
+    url: 'purchase',
     type: 'POST',
     data: {
       'username': username, 'cart': cart_items
@@ -84,7 +86,22 @@ function purchase(){
     error: function(err){
       console.log(err.message);
     }
-  });
+  });*/
+
+/*
+  const xhr = new XMLHttpRequest();
+  xhr.open("POST", "thicc");
+  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhr.send(`username=${username}&cart=${cart_items}`)
+*/
+
+$("#form1").submit(function(){
+  $('<input />').attr('type', 'hidden')
+    .attr('name', 'cart')
+    .attr('value', cart_items)
+});
+clear_cart();
+
 }
 
 // Erase everything in localstorage
