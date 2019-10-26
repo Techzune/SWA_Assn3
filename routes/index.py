@@ -51,4 +51,4 @@ def history():
 
 @routes.route('/inventory')
 def inventory():
-    return render_template('inventory.jinja2', item=db.get_inventory())
+    return render_template('inventory.jinja2', inventory=db.get_inventory())

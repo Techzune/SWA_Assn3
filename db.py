@@ -223,8 +223,9 @@ def get_inventory(db=None):
     result = []
     for row in cur.fetchall():
         try:
-            result.append(InventoryItem(id_=row[0], name=row[1], description=row[2],
-                                        price=row[3], category=ItemCategory[row[4]], qty=row[5]))
+            if row[5] > 0:
+                result.append(InventoryItem(id_=row[0], name=row[1], description=row[2],
+                                            price=row[3], category=ItemCategory[row[4]], qty=row[5]))
         except Exception as e:
             print("invalid inventory item:", e)
 

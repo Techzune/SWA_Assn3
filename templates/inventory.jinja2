@@ -4,7 +4,7 @@
 {% block content %}
   <h3>Inventory</h3>
   <div class="row">
-    {% for i in item %}
+    {% for i in inventory %}
       <div class="col-md-6 col-lg-4 col-xl-3 py-2">
         <div class="card h-100 p-4" style="min-height:200px;">
           <div class="card-body">
@@ -12,7 +12,7 @@
             <hr>
             <h5 class="card-title">{{ i.name }}</h5>
             <p class="card-text">{{ i.description }}</p>
-            <p class="mt-auto">Price: {{ i.price }} | Stock: {{ i.quantity }} </p>
+            <p class="mt-auto">Price: {{ i.price_as_str }} | Stock: {{ i.quantity }} </p>
             <button type="button" class="btn btn-primary mt-auto">Add to Cart</button>
           </div>
         </div>

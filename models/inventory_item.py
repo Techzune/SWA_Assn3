@@ -3,6 +3,9 @@
 #
 # Model for item in inventory
 #
+import locale
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class InventoryItem:
@@ -24,3 +27,7 @@ class InventoryItem:
         self.price = price
         self.category = category
         self.quantity = qty
+
+    @property
+    def price_as_str(self):
+        return locale.currency(self.price)
