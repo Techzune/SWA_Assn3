@@ -9,31 +9,35 @@
       <h2 class="card-title mb-4">Your previous purchases</h2>
 
       {# PURCHASES #}
-      {% for purchase in purchases %}
-        <div class="card mt-3">
-          <div class="card-header">
-            Address:<br/>
-            {{ purchase.address.street }},
-            {% if purchase.address.street2 %}
-              {{ purchase.address.street2 }},
-            {% endif %}
-            {{ purchase.address.city }}, {{ purchase.address.state }} {{ purchase.address.zip_code }}
+      {% if purchases %}
+        {% for purchase in purchases %}
+          <div class="card mt-3">
+            <div class="card-header">
+              Address:<br/>
+              {{ purchase.address.street }},
+              {% if purchase.address.street2 %}
+                {{ purchase.address.street2 }},
+              {% endif %}
+              {{ purchase.address.city }}, {{ purchase.address.state }} {{ purchase.address.zip_code }}
+            </div>
+            <div class="card-body">
+              {# LIST EACH ITEM #}
+              {% for cart_item in purchase.items %}
+                <div class="row">
+                  <h5 class="col card-title text-uppercase">{{ cart_item.item.name }}
+                    <span class="text-muted text-lowercase">x {{ cart_item.qty }}</span></h5>
+                  <h4 class="col text-right card-title text-uppercase">{{ cart_item.price_as_str }}</h4>
+                </div>
+              {% endfor %}
+            </div>
+            <div class="card-footer text-right">
+              <b>total: {{ purchase.total_price_as_str }}</b>
+            </div>
           </div>
-          <div class="card-body">
-            {# LIST EACH ITEM #}
-            {% for cart_item in purchase.items %}
-              <div class="row">
-                <h5 class="col card-title text-uppercase">{{ cart_item.item.name }}
-                  <span class="text-muted text-lowercase">x {{ cart_item.qty }}</span></h5>
-                <h4 class="col text-right card-title text-uppercase">{{ cart_item.price_as_str }}</h4>
-              </div>
-            {% endfor %}
-          </div>
-          <div class="card-footer text-right">
-            <b>total: {{ purchase.total_price_as_str }}</b>
-          </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        <p>You have no previous purchases!</p>
+      {% endif %}
     </div>
   </div>
 

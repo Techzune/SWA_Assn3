@@ -68,7 +68,7 @@ def create_db(force=False):
         # create PurchaseItem table
         cur.execute("""
             CREATE TABLE PurchaseItem (
-                PurchaseID INTEGER PRIMARY KEY,
+                PurchaseID INTEGER,
                 InventoryItemID INTEGER,
                 Price FLOAT,
                 Quantity INTEGER,
