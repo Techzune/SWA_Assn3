@@ -96,10 +96,23 @@ def create_db(force=False):
         # insert Sample Inventory items
         add_item(InventoryItem(name="Apple", description="One a day is 19g of sugar!", price=1.25,
                                category=ItemCategory.TOYS, qty=23), db)
+        add_item(InventoryItem(name="Teddy Bear", description="Missing his head, but he still loves you!", price=9.99,
+                               category=ItemCategory.TOYS, qty=6), db)
+
         add_item(InventoryItem(name="Book", description="That's a nice cover. I might read that.", price=42.11,
                                category=ItemCategory.BOOKS, qty=2), db)
+        add_item(InventoryItem(name="The Great Gatsby", description="Every girls dream love story.", price=18.50,
+                               category=ItemCategory.BOOKS, qty=30), db)
+        add_item(InventoryItem(name="Twilight", description="Spurkle Purty", price=0.99,
+                               category=ItemCategory.BOOKS, qty=88), db)
+
         add_item(InventoryItem(name="Raspberry Pi", description="What do you do with this?", price=3.14,
                                category=ItemCategory.SMALL_ELECTRONICS, qty=99), db)
+        add_item(InventoryItem(name="Apple Pi", description="Raspberry pi, but tastier!", price=5.55,
+                               category=ItemCategory.SMALL_ELECTRONICS, qty=99), db)
+
+        add_item(InventoryItem(name="Toothpaste", description="Minty Fresh", price=500.99,
+                               category=ItemCategory.HOUSEHOLD_ITEMS, qty=10), db)
 
         db.commit()
         cur.close()
