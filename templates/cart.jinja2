@@ -165,9 +165,21 @@
 {% block extra_js %}
   <script>
       $(function () {
-          $('#inputCity').keypress(lettersOnly);
-          $('#inputCard').keypress(numsOnly);
-          $('#inputZip').keypress(numsOnly);
+          const inputCity = $('#inputCity');
+          const inputCard = $('#inputCard');
+          const inputZip = $('#inputZip');
+          inputCity.keypress(lettersOnly);
+          inputCity.on("paste", function (e) {
+              e.preventDefault();
+          });
+          inputCard.keypress(numsOnly);
+          inputCard.on("paste", function (e) {
+              e.preventDefault();
+          });
+          inputZip.keypress(numsOnly);
+          inputZip.on("paste", function (e) {
+              e.preventDefault();
+          });
       });
   </script>
 {% endblock %}
