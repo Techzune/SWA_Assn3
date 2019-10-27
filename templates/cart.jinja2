@@ -8,36 +8,44 @@
       <h2 class="card-title mb-4">Your shopping cart</h2>
 
       {# LIST EACH ITEM #}
-      {% for cart_item in cart.items %}
-        <div class="card card-body mt-3">
-          <div class="row">
-            <h5 class="col card-title text-uppercase">{{ cart_item.item.name }}</h5>
-            <h4 class="col text-right card-title text-uppercase">{{ cart_item.price_as_str }}</h4>
+      {% if cart.items %}
+        {% for cart_item in cart.items %}
+          <div class="card card-body mt-3">
+            <div class="row">
+              <h5 class="col card-title text-uppercase">{{ cart_item.item.name }}</h5>
+              <h4 class="col text-right card-title text-uppercase">{{ cart_item.price_as_str }}</h4>
+            </div>
+            <div class="row">
+              <p class="col text-muted">{{ cart_item.item.description }}</p>
+              <form class="col-1 m-2 ml-auto" method="get" action="/cart/update">
+                <input name="{{ cart_item.item.id_ }}" class="text-right form-control form-control-sm"
+                       value="{{ cart_item.qty }}"/>
+                <input type="submit" class="btn btn-sm btn-secondary mt-1" value="Update">
+              </form>
+            </div>
           </div>
-          <div class="row">
-            <p class="col text-muted">{{ cart_item.item.description }}</p>
-            <form class="col-1 m-2 ml-auto" method="get" action="/cart/update">
-              <input name="{{ cart_item.item.id_ }}" class="text-right form-control form-control-sm"
-                     value="{{ cart_item.qty }}"/>
-              <input type="submit" class="btn btn-sm btn-secondary mt-1" value="Update">
-            </form>
-          </div>
+        {% endfor %}
+
+        {# total #}
+        <hr/>
+        <div class="row px-3">
+          <h4 class="col">Total:</h4>
+          <h4 class="col text-right"><b>{{ cart.total_price_as_str }}</b></h4>
         </div>
-      {% endfor %}
 
-      {# total #}
-      <div class="row mt-4 px-3">
-        <h4 class="col">Total:</h4>
-        <h4 class="col text-right"><b>{{ cart.total_price_as_str }}</b></h4>
+      {% else %}
+        <p>Your shopping cart is empty!</p>
+
+      {% endif %}
+    </div>
+
+    {% if cart.items %}
+      {# purchase button #}
+      <div class="card-footer text-right">
+        <a href="#" role="button" class="ml-auto btn btn-info"
+           data-toggle="modal" data-target="#modalPurchase">Checkout</a>
       </div>
-    </div>
-
-
-    {# purchase button #}
-    <div class="card-footer text-right">
-      <a href="#" role="button" class="ml-auto btn btn-info"
-         data-toggle="modal" data-target="#modalPurchase">Checkout</a>
-    </div>
+    {% endif %}
 
   </div>
 
@@ -133,6 +141,9 @@
                 <label for="inputZip">Zip</label>
                 <input name="zip" type="text" class="form-control" id="inputZip" maxlength="5">
               </div>
+            </div>
+            <div class="alert alert-light text-center mb-0">
+              This purchase will cost <b>{{ cart.total_price_as_str }}</b>.
             </div>
           </div>
           <div class="modal-footer">
