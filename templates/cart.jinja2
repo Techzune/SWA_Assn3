@@ -63,7 +63,10 @@
           <div class="modal-body">
             <div class="form-group">
               <label for="inputCard">Card Number</label>
-              <input name="card" id="inputCard" class="form-control">
+              <input name="card" id="inputCard" class="form-control" maxlength="10">
+              <small class="form-text text-muted">
+                10-digits only. No dashes, please.
+              </small>
             </div>
             <hr/>
             <div class="form-group">
@@ -138,7 +141,7 @@
                 </select>
               </div>
               <div class="form-group col-md-2">
-                <label for="inputZip">Zip</label>
+                <label for="inputZip">Zip Code</label>
                 <input name="zip" type="text" class="form-control" id="inputZip" maxlength="5">
               </div>
             </div>
@@ -157,5 +160,14 @@
     </div>
   </div>
 
+{% endblock %}
 
+{% block extra_js %}
+  <script>
+      $(function () {
+          $('#inputCity').keypress(lettersOnly);
+          $('#inputCard').keypress(numsOnly);
+          $('#inputZip').keypress(numsOnly);
+      });
+  </script>
 {% endblock %}
