@@ -78,7 +78,8 @@ def cart_update():
                 db.update_cart(user=User(current_user.get_id()), item=ShoppingCartItem(item=inv_item),
                                qty=qty)
             else:
-                flask.flash("<b>Exceeds stock:</b> {} has no more than {} items available.".format(inv_item.name, inv_item.quantity),
+                flask.flash("<b>Exceeds stock:</b> {} has no more than {} items available.".format(inv_item.name,
+                                                                                                   inv_item.quantity),
                             "warning")
         except Exception:
             continue
@@ -136,3 +137,8 @@ def history():
 @routes.route('/inventory')
 def inventory():
     return render_template('inventory.jinja2', inventory=db.get_inventory())
+
+
+@routes.route('/unauthorized')
+def unauthorized():
+    return render_template('unauthorized.jinja2')

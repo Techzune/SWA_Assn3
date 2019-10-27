@@ -16,6 +16,8 @@ from routes import *
 # ===============================================
 # Initialize Flask application
 # ===============================================
+from routes.index import unauthorized
+
 app = Flask(__name__)
 app.register_blueprint(routes)
 
@@ -49,6 +51,11 @@ login_manager.init_app(app)
 def load_user(user_id):
     id_ = int(user_id)
     return get_user(User(id_=id_))
+
+
+@login_manager.unauthorized_handler
+def unauthorized_handler():
+    return unauthorized()
 
 
 # ===============================================
